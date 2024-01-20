@@ -5,15 +5,12 @@ const formatTime = (seconds) =>
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-
   const skipToZero = () => {
     setCount(0);
   };
-
   const addTime = () => {
     setCount((prevCount) => Math.min(prevCount + 10, 60));
   };
-
   useEffect(() => {
     let timer;
     if (count < 60) {
@@ -21,7 +18,7 @@ const Counter = () => {
         setCount((prevCount) => Math.min(prevCount + 1, 60));
       }, 1000);
     } else {
-        setCount(0);
+      setCount(0);
     }
     return () => clearTimeout(timer);
   }, [count]);
@@ -36,13 +33,13 @@ const Counter = () => {
     alignItems: "center",
     justifyContent: "center",
     margin: "auto",
-    fontSize:"38px",
+    fontSize: "38px",
   };
 
   const buttonContainerStyle = {
     display: "flex",
     justifyContent: "center",
-    marginTop: "20px", 
+    marginTop: "20px",
   };
 
   const buttonStyle = {
@@ -57,11 +54,11 @@ const Counter = () => {
     marginLeft: "30px",
     boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.2)",
   };
-  
-    const divStyle = {
-        margin:"10%",
-    }
-    
+
+  const divStyle = {
+    margin: "10%",
+  };
+
   return (
     <div className="admin" style={divStyle}>
       <center>
