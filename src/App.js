@@ -16,6 +16,13 @@ function App() {
   //   setAmount(parseInt(inputValue, 10) || 0);
   // };
 
+  const appStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center", 
+    justifyContent: "center", 
+    height: "100vh",
+  };
   return (
     // <div className="App">
     //   <div>
@@ -36,7 +43,9 @@ function App() {
     //   />
     // </div>
     <>
-      <Counter/>
+      <div style={appStyle}>
+        <Counter />
+      </div>
     </>
   );
 }

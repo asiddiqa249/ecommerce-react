@@ -56,7 +56,14 @@ const Counter = () => {
   };
 
   const divStyle = {
-    margin: "10%",
+    width: "400px",
+    border: "3px solid black",
+    padding: "5%",
+    margin: "7%",
+    borderRadius: "10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   };
 
   return (
