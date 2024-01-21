@@ -4,30 +4,61 @@ const formatTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substr(14, 5);
 
 const Counter = () => {
-  const [count, setCount] = useState(0);
+  const totalTime = 60;
+  const [count, setCount] = useState(60);
+  const [isRunning, setIsRunning] = useState(true);
+  const [borderColor, setBorderColor] = useState("#D7BDE2");
+
   const skipToZero = () => {
     setCount(0);
+    setIsRunning(false);
   };
+
   const addTime = () => {
-    setCount((prevCount) => Math.min(prevCount + 10, 60));
+    setCount((prevCount) => Math.max(prevCount + 10, 0));
   };
+
   useEffect(() => {
     let timer;
-    if (count < 60) {
+    if (isRunning && count > 0) {
       timer = setTimeout(() => {
-        setCount((prevCount) => Math.min(prevCount + 1, 60));
-      }, 1000);
-    } else {
-      setCount(0);
-      timer = setTimeout(() => {
-        setCount((prevCount) => Math.min(prevCount + 1, 60));
+        setCount((prevCount) => Math.max(prevCount - 1, 0));
+        setBorderColor((prevColor) => {
+          const hexToRgb = (hex) =>
+            hex
+              .replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
+              .substring(1)
+              .match(/.{2}/g)
+              .map((x) => parseInt(x, 16));
+
+          const rgbToHex = (r, g, b) =>
+            '#' +
+            [r, g, b]
+              .map((x) => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+              })
+              .join('');
+
+          const rgb = hexToRgb(prevColor);
+          const newRgb = rgb.map((value) => Math.max(value - 5, 0));
+          const newColor = rgbToHex(...newRgb);
+
+          return newColor;
+        });
       }, 1000);
     }
     return () => clearTimeout(timer);
+  }, [count, isRunning]);
+
+  useEffect(() => {
+    if (count === 0) {
+      setIsRunning(false);
+    }
   }, [count]);
 
   const timerStyle = {
-    border: "4px solid #A82798",
+    border: `4px solid ${borderColor}`,
     width: "150px",
     height: "150px",
     borderRadius: "50%",
@@ -37,6 +68,7 @@ const Counter = () => {
     justifyContent: "center",
     margin: "auto",
     fontSize: "38px",
+    background: `conic-gradient(${borderColor} ${(count / totalTime) * 100}%, transparent ${(count / totalTime) * 100}%)`,
   };
 
   const buttonContainerStyle = {
@@ -57,7 +89,6 @@ const Counter = () => {
     marginLeft: "30px",
     boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.2)",
   };
-
   const divStyle = {
     width: "400px",
     border: "3px solid black",
@@ -72,21 +103,22 @@ const Counter = () => {
     border: "1px transparent #A82798",
     borderRadius: "10px",
     backgroundColor: "#FCE2F9",
-    padding:"2%",
+    padding: "2%",
   };
   const imgDivStyle = {
     color: "#A82798",
     display: "flex",
   };
   const imgStyle = {
-    marginRight:"20px",
-  }
+    marginRight: "20px",
+  };
   const bottomDiv = {
     color: "#A82798",
     fontSize: "16px",
     display: "flex",
     justifyContent: "space-evenly",
   };
+
   return (
     <>
       <div className="admin" style={divStyle}>
@@ -117,7 +149,7 @@ const Counter = () => {
           </div>
           <div style={bottomDiv}>
             <span>60 sec</span>
-            <span fontWeight="bold">How to do</span>
+            <span>How to do</span>
           </div>
         </div>
       </div>
