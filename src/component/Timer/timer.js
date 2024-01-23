@@ -8,6 +8,7 @@ const Counter = () => {
   const [count, setCount] = useState(60);
   const [isRunning, setIsRunning] = useState(true);
   const [borderColor, setBorderColor] = useState("#D7BDE2");
+  const [borderOpacity, setBorderOpacity] = useState(1);
 
   const skipToZero = () => {
     setCount(0);
@@ -23,33 +24,20 @@ const Counter = () => {
     if (isRunning && count > 0) {
       timer = setTimeout(() => {
         setCount((prevCount) => Math.max(prevCount - 1, 0));
-        setBorderColor((prevColor) => {
-          const hexToRgb = (hex) =>
-            hex
-              .replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
-              .substring(1)
-              .match(/.{2}/g)
-              .map((x) => parseInt(x, 16));
-
-          const rgbToHex = (r, g, b) =>
-            '#' +
-            [r, g, b]
-              .map((x) => {
-                const hex = x.toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-              })
-              .join('');
-
-          const rgb = hexToRgb(prevColor);
-          const newRgb = rgb.map((value) => Math.max(value - 5, 0));
-          const newColor = rgbToHex(...newRgb);
-
-          return newColor;
-        });
       }, 1000);
     }
     return () => clearTimeout(timer);
   }, [count, isRunning]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Decrease opacity over time
+      setBorderOpacity((prevOpacity) => Math.max(prevOpacity - 0.1, 0));
+    }, 1000); // Change the interval as needed (1000ms = 1 second)
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array ensures the effect runs only once on mount
 
   useEffect(() => {
     if (count === 0) {
@@ -68,7 +56,10 @@ const Counter = () => {
     justifyContent: "center",
     margin: "auto",
     fontSize: "38px",
-    background: `conic-gradient(${borderColor} ${(count / totalTime) * 100}%, transparent ${(count / totalTime) * 100}%)`,
+    boxShadow: "0px 0px 3px 2px rgba(0, 0, 0, 0.2)",
+    background: `conic-gradient(${borderColor} ${
+      (count / totalTime) * 100
+    }%, transparent ${(count / totalTime) * 100}%)`,
   };
 
   const buttonContainerStyle = {
@@ -125,9 +116,15 @@ const Counter = () => {
         <center>
           <h2>Timer</h2>
         </center>
-        <h1 id="timer" style={timerStyle}>
-          {formatTime(count)}
-        </h1>
+        <div
+          className="your-component"
+          // style={{ border: `2px solid rgba(0, 0, 0, ${borderOpacity})` }}
+        >
+          <h1 id="timer" style={timerStyle}>
+            {formatTime(count)}
+          </h1>
+        </div>
+
         <div style={buttonContainerStyle}>
           <button style={buttonStyle} onClick={skipToZero}>
             ⏩ Skip

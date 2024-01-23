@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import "./App.css";
 import Counter from "./component/Timer/timer";
+import Counters from "./component/practice";
 
 function App() {
   // const [amount, setAmount] = useState(0);
@@ -19,8 +20,8 @@ function App() {
   const appStyle = {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center", 
-    justifyContent: "center", 
+    alignItems: "center",
+    justifyContent: "center",
     height: "100vh",
   };
   return (
@@ -46,6 +47,7 @@ function App() {
       <div style={appStyle}>
         <Counter />
       </div>
+      {/* <Counters/> */}
     </>
   );
 }
