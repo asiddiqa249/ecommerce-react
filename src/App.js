@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import "./App.css";
-import Counter from "./component/Timer/timer";
-import Counters from "./component/practice";
+// import Counter from "./component/Timer/timer";
+// import Counters from "./component/countDown";
+import Custom from "./component/countDown";
 
 function App() {
   // const [amount, setAmount] = useState(0);
@@ -45,9 +46,8 @@ function App() {
     // </div>
     <>
       <div style={appStyle}>
-        <Counter />
+        <Custom/>
       </div>
-      {/* <Counters/> */}
     </>
   );
 }
