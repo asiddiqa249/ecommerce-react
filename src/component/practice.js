@@ -3,30 +3,29 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import "./styles.css";
 
-const formatTime = (seconds) =>
-  new Date(seconds * 1000).toISOString().substr(14, 5);
-
-const renderTime = ({ formatTime }) => {
-  //   if (remainingTime === 0) {
-  //     return <div className="timer">Too lale...</div>;
-  //   }
-  //   remainingTime = "00:00";
-
-  return (
-    <div className="timer">
-      <div className="value">9</div>
-    </div>
-  );
-};
-
 function Custom() {
-  const [select, setSelect] = React.useState(60);
+  const [select, setSelect] = React.useState(10);
   const [count, setCount] = useState(60);
+  const [c, setC] = useState(60);
   const [isRunning, setIsRunning] = useState(true);
+  const [complete, setComplete] = useState(false);
   const buttonContainerStyle = {
     display: "flex",
     justifyContent: "center",
     marginTop: "20px",
+  };
+  const renderTime = ({ remainingTime }) => {
+    setC(remainingTime);
+    //   if (remainingTime === 0) {
+    //     return <div className="timer">Too lale...</div>;
+    //   }
+    //   remainingTime = "00:00";
+
+    return (
+      <div className="timer">
+        <div className="value">00:{c < 10 ? `0${c}` : c}</div>
+      </div>
+    );
   };
 
   const buttonStyle = {
@@ -73,8 +72,10 @@ function Custom() {
   };
 
   const skipToZero = () => {
-    setSelect(0);
-    setIsRunning(false);
+    setC(0);
+    // setSelect(0);
+    // setIsRunning(false);
+    setComplete(true);
   };
   const addTime = () => {
     setSelect((prevCount) => Math.max(prevCount + 10, 0));
@@ -98,14 +99,14 @@ function Custom() {
 
   return (
     <div className="App" style={divStyle}>
-      <h1>Timer</h1>
+      <h1>Timer {c}</h1>
       <div className="timer-wrapper">
         <CountdownCircleTimer
           //   key={timer}
-          isPlaying
+          isPlaying={isRunning}
           duration={select}
           colors={["#A82798", 0.33]}
-          //   onComplete={() => [false, 1000]}
+          onComplete={() => [complete, 0]}
         >
           {renderTime}
         </CountdownCircleTimer>
