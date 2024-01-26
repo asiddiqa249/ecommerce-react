@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import "./styles.css";
 function Custom() {
-  const [select, setSelect] = React.useState(60);
+  const [select, setSelect] = useState(60);
   const [count, setCount] = useState(60);
   const [c, setC] = useState(60);
   const [isRunning, setIsRunning] = useState(true);
@@ -46,6 +46,8 @@ function Custom() {
     fontSize: "16px",
     display: "flex",
     justifyContent: "space-evenly",
+    marginLeft: "130px",
+    marginTop: "65px",
   };
   const divStyle = {
     width: "400px",
@@ -67,21 +69,26 @@ function Custom() {
     }
     return (
       <div className="timer">
-        <div className="value">{formatTimer(displayTime)}</div>
+        <div className="value">{formatTimer(count)}</div>
       </div>
     );
   };
   const skipToZero = () => {
     setSelect(0);
+    setCount(0);
     setIsRunning(false);
     setComplete(true);
   };
+  console.log(count);
   const addTime = () => {
-    setSelect((prevCount) => Math.max(prevCount + 10, 0));
+    if (count <= 50) {
+      setCount(count + 10);
+      setComplete(false);
+    }
   };
   useEffect(() => {
     let timer = 60;
-    if (isRunning && count > 0) {
+    if (count) {
       timer = setTimeout(() => {
         setCount((prevCount) => Math.max(prevCount - 1, 0));
       }, 1000);
@@ -93,13 +100,17 @@ function Custom() {
       setIsRunning(false);
     }
   }, [count]);
+
   return (
     <div className="App" style={divStyle}>
-      <h1>Timer</h1>
+      <div>
+        <h2>Routine Starting in...</h2>
+        <p>Timer</p>
+      </div>
       <div className="timer-wrapper">
         <CountdownCircleTimer
           isPlaying={isRunning}
-          duration={select}
+          duration={count}
           colors={colors}
           onComplete={() => setComplete(true)}
         >
@@ -118,18 +129,31 @@ function Custom() {
       </div>
       <div style={mainDiv}>
         <p>Step 2/3</p>
-        <div style={imgDivStyle}>
-          <img
-            src="https://cdn2.iconfinder.com/data/icons/cleaning-outlines/100/04-512.png"
-            alt="..."
-            width="80px"
-            style={imgStyle}
-          />
-          <p>Cleansing</p>
-        </div>
-        <div style={bottomDiv}>
-          <span>60 sec</span>
-          <span>How to do</span>
+        <div style={{ display: "flex" }}>
+          <div>
+            <img
+              src="https://cdn2.iconfinder.com/data/icons/cleaning-outlines/100/04-512.png"
+              alt="..."
+              width="80px"
+              style={imgStyle}
+            />
+          </div>
+          <div style={imgDivStyle}>
+            <div style={{ marginLeft: "-18px" }}>
+              <p style={{ color: "black" }}>Cleansing</p>
+              <span style={{ fontSize: "15px" }}>
+                <img
+                  src="https://c0.klipartz.com/pngpicture/365/563/gratis-png-iconos-de-la-computadora-tiempo-y-relojes-de-asistencia-tiempo-thumbnail.png"
+                  width={18}
+                  alt="..."
+                />{" "}
+                60 sec
+              </span>
+            </div>
+            <div style={bottomDiv}>
+              <span>How to do</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
