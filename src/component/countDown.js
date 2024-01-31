@@ -79,7 +79,6 @@ function Custom() {
     setIsRunning(false);
     setComplete(true);
   };
-  console.log(count);
   const addTime = () => {
     if (count <= 50) {
       setCount(count + 10);
@@ -113,6 +112,7 @@ function Custom() {
           duration={count}
           colors={colors}
           onComplete={() => setComplete(true)}
+          rotation
         >
           {renderTime}
         </CountdownCircleTimer>
