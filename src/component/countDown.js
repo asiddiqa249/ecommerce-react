@@ -124,7 +124,7 @@ function Custom() {
           </button>
           <button style={buttonStyle} onClick={addTime}>
             + 10 sec
-          </button>
+          </button> 
         </div>
       </div>
       <div style={mainDiv}>
